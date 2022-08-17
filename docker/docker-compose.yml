@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'ze123'
+      MYSQL_DATABASE: 'devbook'
+      MYSQL_USER: 'golang'
+      MYSQL_PASSWORD: 'golang'
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../sql/devbook.sql:/devbook.sql
+
