@@ -6,9 +6,7 @@ import (
 	"api/src/repositorios"
 	"api/src/respostas"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -24,12 +22,17 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	if erro = json.Unmarshal(corpoRequest, &usuario); erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
-		}
+	}
+
+	if erro = usuario.Preparar(); erro != nil {
+		respostas.Erro(w, http.StatusBadRequest, erro)
+		return
 	}
 
 	db, erro := banco.Conectar()
 	if erro != nil {
-		respostas.Er
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
 	}
 
 	defer db.Close()
@@ -38,10 +41,14 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	usuarioID, erro := repositorio.CriarUsuario(usuario)
 
 	if erro != nil {
-		log.Fatal(erro)
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
 	}
 
-	w.Write([]byte(fmt.Sprintf("ID inserido: %d", usuarioID)))
+	usuario.ID = usuarioID
+
+	respostas.JSON(w, http.StatusCreated, usuario)
+
 }
 
 // BuscarUsuarios retorna os usuários do sistema
