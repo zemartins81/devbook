@@ -50,17 +50,14 @@ func (repositorio Usuarios) Buscar(nomeOuNick string) ([]modelos.Usuario, error)
 	nomeOuNick = fmt.Sprintf("%%%s%%", nomeOuNick) // %nomeOuNick%
 
 	linhas, erro := repositorio.db.Query(
-		"select id, nome, nick, email, criadoEm 
-		from usuarios where nome LIKE ? or nick LIKE ?",
-		nomeOuNick, nomeOuNick
-	)
+		"select id, nome, nick, email  from usuarios where nome LIKE ? or nick LIKE ?", nomeOuNick, nomeOuNick)
 
 	if erro != nil {
 		return nil, erro
 	}
 
 	defer linhas.Close()
-	
+
 	var usuarios []modelos.Usuario
 	for linhas.Next() {
 		var usuario modelos.Usuario
@@ -70,15 +67,42 @@ func (repositorio Usuarios) Buscar(nomeOuNick string) ([]modelos.Usuario, error)
 			&usuario.Nome,
 			&usuario.Nick,
 			&usuario.Email,
-			&usuario.CriadoEm
-			
+			//usuario.CriadoEm,
 		); erro != nil {
 			return nil, erro
 		}
+		fmt.Println(usuario)
 
 		usuarios = append(usuarios, usuario)
 	}
 
+	fmt.Println(usuarios)
+
 	return usuarios, nil
+
+}
+
+func (repositorio Usuarios) BuscarPorId(ID uint64) (modelos.Usuario, error) {
+	linhas, erro := repositorio.db.Query(" select id, nome, nick, email, CriadoEm from usuarios where id = ?",
+		ID,
+	)
+	defer linhas.Close()
+
+	var usuario modelos.Usuario
+
+	if linhas.Next() {
+
+		if erro = linhas.Scan(
+			&usuario.ID,
+			&usuario.Nome,
+			&usuario.Nick,
+			&usuario.Email,
+			&usuario.CriadoEm,
+		); erro != nil {
+			return modelos.Usuario{}, erro
+		}
+	}
+
+	return usuario, nil
 
 }
