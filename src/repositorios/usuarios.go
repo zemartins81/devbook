@@ -48,6 +48,7 @@ func (repositorio Usuarios) CriarUsuario(usuario modelos.Usuario) (uint64, error
 // Buscar retorna todos os usuarios que atendem a um filtro de nome ou nick
 func (repositorio Usuarios) Buscar(nomeOuNick string) ([]modelos.Usuario, error) {
 	nomeOuNick = fmt.Sprintf("%%%s%%", nomeOuNick) // %nomeOuNick%
+	fmt.Println("teste")
 
 	linhas, erro := repositorio.db.Query(
 		"select id, nome, nick, email  from usuarios where nome LIKE ? or nick LIKE ?", nomeOuNick, nomeOuNick)
@@ -83,9 +84,12 @@ func (repositorio Usuarios) Buscar(nomeOuNick string) ([]modelos.Usuario, error)
 }
 
 func (repositorio Usuarios) BuscarPorId(ID uint64) (modelos.Usuario, error) {
-	linhas, erro := repositorio.db.Query(" select id, nome, nick, email, CriadoEm from usuarios where id = ?",
+	linhas, erro := repositorio.db.Query(" select id, nome, nick, email, criadoEm from usuarios where id = ?",
 		ID,
 	)
+	if erro != nil {
+		return modelos.Usuario{}, erro
+	}
 	defer linhas.Close()
 
 	var usuario modelos.Usuario
