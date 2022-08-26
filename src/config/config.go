@@ -21,11 +21,10 @@ func Carregar() {
 		Porta = 5000
 	}
 
-	StringConexaoDB = fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s",
+	StringConexaoDB = fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s?charset=utf8&parseTime=true",
 		os.Getenv("DB_USUARIO"),
 		os.Getenv("DB_SENHA"),
 		os.Getenv("DB_NOME"),
 	)
 
-	fmt.Println(StringConexaoDB)
 }

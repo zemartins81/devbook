@@ -40,7 +40,7 @@ func (usuario *Usuario) validar() error {
 	if usuario.Senha == "" {
 		return errors.New("A senha não pode ficar em branco")
 	}
-	
+
 	return nil
 }
 
