@@ -1,14 +1,12 @@
 package autenticacao
 
 import (
-	"go/token"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-//CriarToken retorna um token assinado com as permissões do usuário
+// CriarToken retorna um token assinado com as permissões do usuário
 func CriarToken(usuarioID uint64) (string, error) {
 
 	permissoes := jwt.MapClaims{}

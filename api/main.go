@@ -16,6 +16,13 @@ func init() {
 	if erro = godotenv.Load(); erro != nil {
 		log.Fatal(erro)
 	}
+
+	/* chave := make([]byte, 64)
+	 * if _, erro := rand.Read(chave); erro != nil {
+	 *   log.Fatal(erro)
+	 * }
+	 * stringBase64 := base64.StdEncoding.EncodeToString(chave)
+	 * fmt.Println(stringBase64) */
 }
 
 func main() {
@@ -23,7 +30,7 @@ func main() {
 
 	r := router.Gerar()
 
-	fmt.Println("teste")
+	fmt.Println(config.SecretKey)
 
 	fmt.Printf("Servidor rodando na porta %d \n", config.Porta)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Porta), r))
