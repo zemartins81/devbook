@@ -1,6 +1,8 @@
 package autenticacao
 
 import (
+	"api/src/config"
+	"net/http"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -14,5 +16,10 @@ func CriarToken(usuarioID uint64) (string, error) {
 	permissoes["exp"] = time.Now().Add(time.Minute * 60).Unix()
 	permissoes["usuarioID"] = usuarioID
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, permissoes)
-	return token.SignedString([]byte("secret"))
+	return token.SignedString([]byte(config.SecretKey))
+}
+
+// ValidarToken verifica se o token passado na requisição é valido
+func ValidarToken(r *http.Request) error {
+	return nil
 }

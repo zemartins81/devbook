@@ -10,7 +10,7 @@ var (
 	// StringConexaoDB é a string de conexão com o DB
 	StringConexaoDB = ""
 	Porta           = 0
-	SecretKey = []byte
+	SecretKey       []byte
 )
 
 // Carregar vai inicializar as variáveis de ambiente
