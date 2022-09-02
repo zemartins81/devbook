@@ -2,10 +2,14 @@ package autenticacao
 
 import (
 	"api/src/config"
+	"fmt"
+	"go/token"
 	"net/http"
+	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gostaticanalysis/nilerr"
 )
 
 // CriarToken retorna um token assinado com as permissões do usuário
@@ -21,5 +25,29 @@ func CriarToken(usuarioID uint64) (string, error) {
 
 // ValidarToken verifica se o token passado na requisição é valido
 func ValidarToken(r *http.Request) error {
-	return nil
+				tokenString := extrairToken( r )
+				token, erro := jwt.Parse(tokenString, retornarChaveDeVerificacao)
+				if erro != nil {
+								return erro
+				}
+
+				fmt.Println(token)
+				return nil
+}
+
+func extrairToken(r *http.Request) string {
+	token := r.Header.Get("Authorization")
+
+	tokenExtraido, erro := strings.Split(token, " ")[1]
+	erro != nil{return ""}
+	return tokenExtraido
+	
+}
+
+func retornarChaveDeVerificacao(token *jwt.Token) (interface{}, erro) {
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+								return nil, fmt.Error("Método de assinatura inválido! %v", token. Header["alg"])
+				}
+
+				return config.SecretKey, nil
 }
