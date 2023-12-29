@@ -1,36 +1,39 @@
 package rotas
 
-import "net/http"
+import (
+	"api/src/router/controllers"
+	"net/http"
+)
 
 var rotasUsuarios = []Rota{
 	{
 		URI:                "/usuarios",
 		Metodo:             http.MethodPost,
-		Funcao:             CriarUsuario,
+		Funcao:             controllers.CriarUsuario,
 		RequerAutenticacao: false,
 	},
 	{
 		URI:                "/usuarios",
 		Metodo:             http.MethodGet,
-		Funcao:             BuscarUsuarios,
+		Funcao:             controllers.BuscarUsuarios,
 		RequerAutenticacao: true,
 	},
 	{
 		URI:                "/usuarios/{usuarioId}",
 		Metodo:             http.MethodGet,
-		Funcao:             BuscarUsuario,
+		Funcao:             controllers.BuscarUsuario,
 		RequerAutenticacao: true,
 	},
 	{
 		URI:                "/usuarios/{usuarioId}",
 		Metodo:             http.MethodPut,
-		Funcao:             AtualizarUsuario,
+		Funcao:             controllers.AtualizarUsuario,
 		RequerAutenticacao: true,
 	},
 	{
 		URI:                "/usuarios/{usuarioId}",
 		Metodo:             http.MethodDelete,
-		Funcao:             DeletarUsuario,
+		Funcao:             controllers.DeletarUsuario,
 		RequerAutenticacao: true,
 	},
 }
