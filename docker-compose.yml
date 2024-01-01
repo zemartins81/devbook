@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./api
+    env_file:
+      - .env
+    volumes:
+      - ./api:/go/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7 # ou outro banco de dados SQL de sua escolha
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
