@@ -8,7 +8,7 @@ WORKDIR /go/src/app
 COPY . .
 
 # Baixa as dependências da aplicação Go (se houver)
-RUN go mod download
+RUN go mod tidy
 
 # Compila a aplicação Go
 RUN go build -o /go/bin/app
