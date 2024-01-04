@@ -14,7 +14,7 @@ type Rota struct {
 	RequerAutenticacao bool
 }
 
-//Configurar define as rotas da API
+// Configurar define as rotas da API
 func Configurar(r *mux.Router) *mux.Router {
 	rotas := rotasUsuarios
 

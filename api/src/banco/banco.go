@@ -3,7 +3,6 @@ package banco
 import (
 	"api/src/config"
 	"database/sql"
-
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -11,6 +10,7 @@ import (
 // Retorna um ponteiro para o objeto sql.DB e um erro, se houver.
 func Conectar() (*sql.DB, error) {
 	db, erro := sql.Open("mysql", config.StringConexaoBanco)
+
 	if erro != nil {
 		return nil, erro
 	}

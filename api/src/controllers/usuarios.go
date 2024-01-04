@@ -13,6 +13,7 @@ import (
 
 // CriarUsuario cria um novo usuário no sistema.
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
+
 	corpoRequest, erro := io.ReadAll(r.Body)
 	if erro != nil {
 		log.Fatal(erro)
@@ -28,7 +29,6 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(erro)
 	}
 	defer db.Close()
-	
 
 	repositorio := repositorios.NovoRepositorioDeUsuarios(db)
 	usuarioId, erro := repositorio.Criar(usuario)
@@ -41,10 +41,9 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 // BuscarUsuarios retorna uma lista de todos os usuários.
 func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
-	// Implementação da função
+
 }
 
-// BuscarUsuario procura por um usuário específico com base em um identificador.
 func BuscarUsuario(w http.ResponseWriter, r *http.Request) {
 	// Implementação da função
 }
