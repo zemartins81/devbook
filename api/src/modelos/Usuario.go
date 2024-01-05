@@ -60,12 +60,11 @@ func (u *Usuario) formatar(etapa string) error {
 	u.Nick = strings.TrimSpace(u.Nick)
 	u.Email = strings.TrimSpace(u.Email)
 
-	if etapa == "cadastro" {
+	if etapa == "cadastro" && u.Senha != "" {
 		senhaComHash, erro := seguranca.Hash(u.Senha)
 		if erro != nil {
 			return erro
 		}
-
 		u.Senha = string(senhaComHash)
 	}
 

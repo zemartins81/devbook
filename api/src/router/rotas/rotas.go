@@ -17,6 +17,7 @@ type Rota struct {
 // Configurar define as rotas da API
 func Configurar(r *mux.Router) *mux.Router {
 	rotas := rotasUsuarios
+	rotas = append(rotas, rotaLogin)
 
 	for _, rota := range rotas {
 		r.HandleFunc(rota.URI, rota.Funcao).Methods(rota.Metodo)
