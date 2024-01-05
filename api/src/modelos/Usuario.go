@@ -20,17 +20,17 @@ type Usuario struct {
 //
 // Retorna um erro se a validação falhar.
 // Retorna nil se a validação for bem-sucedida.
-func (u *Usuario) Preparar() error {
+func (u *Usuario) Preparar(etapa string) error {
 	u.formatar()
 
-	if erro := u.validar(); erro != nil {
+	if erro := u.validar(etapa); erro != nil {
 		return erro
 	}
 
 	return nil
 }
 
-func (u *Usuario) validar() error {
+func (u *Usuario) validar(etapa string) error {
 	if u.Nome == "" {
 		return errors.New("O nome é obrigatório")
 	}
@@ -40,7 +40,7 @@ func (u *Usuario) validar() error {
 	if u.Email == "" {
 		return errors.New("O Email é obrigatório")
 	}
-	if u.Senha == "" {
+	if etapa == "cadastro" && u.Senha == "" {
 		return errors.New("A senha é obrigatória")
 	}
 
