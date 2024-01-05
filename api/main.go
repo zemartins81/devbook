@@ -11,8 +11,6 @@ import (
 func main() {
 	config.Carregar()
 
-	fmt.Println(config.StringConexaoBanco)
-
 	r := router.Gerar()
 
 	fmt.Printf("Escutando na porta: %d", config.Porta)

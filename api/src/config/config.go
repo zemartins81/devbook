@@ -1,16 +1,19 @@
 package config
 
 import (
+	"api/src/secret"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 var (
 	StringConexaoBanco = ""
 	Porta              = 0
+	SecretKey          []byte
 )
 
 func Carregar() {
@@ -30,5 +33,9 @@ func Carregar() {
 		os.Getenv("MYSQL_PASSWORD"),
 		os.Getenv("MYSQL_DATABASE"),
 	)
+
+	if SecretKey, erro = secret.GeraSecret(); erro != nil {
+		log.Fatal(erro)
+	}
 
 }
