@@ -4,7 +4,7 @@ import (
 	"api/src/config"
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	jwt "github.com/golang-jwt/jwt/v5"
 )
 
 // CriarToken gera um token JWT para o ID de usuário fornecido.
