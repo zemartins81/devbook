@@ -65,7 +65,7 @@ func ExtrairUsuarioID(r *http.Request) (uint64, error) {
 	return 0, errors.New("token inválido")
 }
 
-func retornarChavedeVerificação(token *jwt.Token) (interface{}, error) {
+func retornarChavedeVerificacao(token *jwt.Token) (interface{}, error) {
 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 		return nil, fmt.Errorf("método de assinatura inesperado! %v", token.Header["alg"])
 	}
