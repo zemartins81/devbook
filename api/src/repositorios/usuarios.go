@@ -192,3 +192,18 @@ func (u Usuarios) Seguir(usuarioID, seguidorID uint64) error {
 	return nil
 
 }
+
+func (u Usuarios) PararDeSeguir(usuarioID, seguidorID uint64) error {
+	statemente, erro := u.db.Prepare(
+		"delete from seguidores where usuario_id = ? and seguidor_id = ?",
+	)
+	if erro != nil {
+		return erro
+	}
+
+	if _, erro = statemente.Exec(usuarioID, seguidorID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
