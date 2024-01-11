@@ -194,16 +194,52 @@ func (u Usuarios) Seguir(usuarioID, seguidorID uint64) error {
 }
 
 func (u Usuarios) PararDeSeguir(usuarioID, seguidorID uint64) error {
-	statemente, erro := u.db.Prepare(
+	statement, erro := u.db.Prepare(
 		"delete from seguidores where usuario_id = ? and seguidor_id = ?",
 	)
 	if erro != nil {
 		return erro
 	}
+	defer statement.Close()
 
-	if _, erro = statemente.Exec(usuarioID, seguidorID); erro != nil {
+	if _, erro = statement.Exec(usuarioID, seguidorID); erro != nil {
 		return erro
 	}
 
 	return nil
+}
+
+func (u Usuarios) BuscarSeguidores(usuarioID uint64) ([]modelos.Usuario, error) {
+	linhas, erro := u.db.Query(`
+	select u.id, u.nome, u.nick, u.email, u.criadoEm
+	from usuarios u inner join seguidores s on u.id = s.seguidor_id where s.usuario_id = ?`,
+		usuarioID)
+	if erro != nil {
+		return nil, erro
+	}
+	defer linhas.Close()
+
+	var usuarios []modelos.Usuario
+
+	for linhas.Next() {
+		var usuario modelos.Usuario
+		var criadoEmBytes []byte
+		if erro = linhas.Scan(
+			&usuario.ID,
+			&usuario.Nome,
+			&usuario.Nick,
+			&usuario.Email,
+			&criadoEmBytes,
+		); erro != nil {
+			return nil, erro
+		}
+		criadoEmStr := string(criadoEmBytes)
+		usuario.CriadoEm, erro = time.Parse("2006-01-02 15:04:05", criadoEmStr) // Use o formato correto
+		if erro != nil {
+			return nil, erro
+		}
+		usuarios = append(usuarios, usuario)
+	}
+
+	return usuarios, nil
 }
