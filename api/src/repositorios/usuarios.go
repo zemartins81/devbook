@@ -243,3 +243,40 @@ func (u Usuarios) BuscarSeguidores(usuarioID uint64) ([]modelos.Usuario, error) 
 
 	return usuarios, nil
 }
+
+func (u Usuarios) BuscarSeguindo(usuarioID uint64) ([]modelos.Usuario, erro) {
+	linhas, erro := repositorio.db.Query(`
+		select u.id, u.nome, u.nick, u.email, u.CriadoEm
+		from usuarios u inner join seguidores s on u.id = s.usuario_id where s.seguidor_id = ?`,
+		usuarioID,
+	)
+	if erro != nil {
+		return nil, erro
+	}
+	defer linhas.Close()
+
+	var usuarios = []modelos.Usuario
+
+	for linhas.Next() {
+		var usuario modelos.Usuario
+		var criadoEmBytes []byte
+		if erro = linhas.Scan(
+			&usuario.ID,
+			&usuario.Nome,
+			&usuario.Nick,
+			&usuario.Email,
+			&criadoEmBytes,
+		); erro != nil {
+			return nil, erro
+		}
+		criadoEmStr := string(criadoEmBytes)
+		usuario.CriadoEm, erro = time.Parse("2006-01-02 15:04:05", criadoEmStr) // Use o formato correto
+		if erro != nil {
+			return nil, erro
+		}
+
+		usuarios = append(usuarios, usuario)
+	}
+	return usuarios, nil
+
+}
