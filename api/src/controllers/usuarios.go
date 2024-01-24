@@ -99,7 +99,6 @@ func BuscarUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respostas.JSON(w, http.StatusOK, usuario)
-
 }
 
 // AtualizarUsuario atualiza os dados de um usuário existente.
@@ -189,7 +188,6 @@ func DeletarUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respostas.JSON(w, http.StatusNoContent, nil)
-
 }
 
 func SeguirUsuario(w http.ResponseWriter, r *http.Request) {
