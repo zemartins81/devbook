@@ -244,8 +244,8 @@ func (u Usuarios) BuscarSeguidores(usuarioID uint64) ([]modelos.Usuario, error) 
 	return usuarios, nil
 }
 
-func (u Usuarios) BuscarSeguindo(usuarioID uint64) ([]modelos.Usuario, erro) {
-	linhas, erro := repositorio.db.Query(`
+func (u Usuarios) BuscarSeguindo(usuarioID uint64) ([]modelos.Usuario, error) {
+	linhas, erro := u.db.Query(`
 		select u.id, u.nome, u.nick, u.email, u.CriadoEm
 		from usuarios u inner join seguidores s on u.id = s.usuario_id where s.seguidor_id = ?`,
 		usuarioID,
@@ -255,7 +255,7 @@ func (u Usuarios) BuscarSeguindo(usuarioID uint64) ([]modelos.Usuario, erro) {
 	}
 	defer linhas.Close()
 
-	var usuarios = []modelos.Usuario
+	var usuarios = []modelos.Usuario{}
 
 	for linhas.Next() {
 		var usuario modelos.Usuario
@@ -291,12 +291,12 @@ func (u Usuarios) BuscarSenha(id uint64) (string, error) {
 	var usuario modelos.Senha
 
 	if linha.Next() {
-		if erro = linha.Scan(&usuario.Senha); erro != nil {
+		if erro = linha.Scan(&usuario.Atual); erro != nil {
 			return "", erro
 		}
 	}
 
-	return usuario.Senha, nil
+	return usuario.Atual, nil
 }
 
 func (u Usuarios) AtualizarSenha(id uint64, senha string) error {
