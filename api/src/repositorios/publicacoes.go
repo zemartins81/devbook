@@ -30,10 +30,10 @@ func (repositorio publicacoes) Criar(publicacao modelos.Publicacao) (uint64, err
 		return 0, erro
 	}
 
-	ultimoIDInseridp, erro := resultado.LastInsertId()
+	ultimoIDInserido, erro := resultado.LastInsertId()
 	if erro != nil {
 		return 0, erro
 	}
 
-	return uint64(ultimoIDInseridp), nil
+	return uint64(ultimoIDInserido), nil
 }
