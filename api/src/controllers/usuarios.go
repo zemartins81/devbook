@@ -317,7 +317,7 @@ func AtualizarSenha(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parametros := nux.Vars(r)
+	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioID"], 10, 64)
 	if erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
@@ -356,7 +356,7 @@ func AtualizarSenha(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if erro = seguranca.VerificarSenha(senhaSalvaNoBanco, senha.Atual); erro != nil {
-		respostas.Erro(w, http.StatusUnauthorized, erro)
+		respostas.Erro(w, http.StatusUnauthorized, errors.New("Senha inválida"))
 		return
 	}
 

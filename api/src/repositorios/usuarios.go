@@ -310,4 +310,5 @@ func (u Usuarios) AtualizarSenha(id uint64, senha string) error {
 		return erro
 	}
 
+	return nil
 }

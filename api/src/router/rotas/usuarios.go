@@ -66,5 +66,5 @@ var rotasUsuarios = []Rota{
 		Metodo: http.MethodPost,
 		Funcao: controllers.AtualizarSenha,
 		RequerAutenticacao: true,
-	}
+	},
 }
