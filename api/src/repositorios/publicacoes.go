@@ -105,3 +105,19 @@ func (p publicacoes) Buscar(usuarioID uint64) ([]modelos.Publicacao, error) {
 
 	return publicacoes, nil
 }
+
+func (p publicacoes) Atualizar(publicacaoId uint64, publicacao modelos.Publicacao) error {
+	statement, erro := p.db.Prepare(`
+	update publicacoes set titulo = ?, conteudo = ? where id = ?
+	`)
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro = statement.Exec(publicacao.Titulo, publicacao.Conteudo, publicacaoId); erro != nil {
+		return erro
+	}
+
+	return nil
+}

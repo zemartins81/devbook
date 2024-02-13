@@ -127,7 +127,42 @@ func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
+	repositorio := repositorios.NovoRepositorioDePublicacoes(db)
+	publicacaoSalvaNoBanco, erro := repositorio.BuscarPorID(publicacaoID)
+	if erro != nil {
 
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	if publicacaoSalvaNoBanco.AutorID != usuarioID {
+		respostas.Erro(w, http.StatusForbidden, erro)
+		return
+	}
+
+	corpoRequisicao, erro := io.ReadAll(r.Body)
+	if erro != nil {
+		respostas.Erro(w, http.StatusUnprocessableEntity, erro)
+		return
+	}
+
+	var publicacao modelos.Publicacao
+	if erro = json.Unmarshal(corpoRequisicao, &publicacao); erro != nil {
+		respostas.Erro(w, http.StatusBadRequest, erro)
+		return
+	}
+
+	if erro = publicacao.Preparar(); erro != nil {
+		respostas.Erro(w, h.StatusBadRequest, erro)
+		return
+	}
+
+	if erro = repositorio.Atualizar(publicacaoID, publicacao); erro != nil {
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	respostas.JSON(w, http.StatusNoContent, nil)
 }
 
 func DeletarPublicacao(w http.ResponseWriter, r *http.Request) {
