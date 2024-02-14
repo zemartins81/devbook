@@ -37,15 +37,21 @@ var rotasPublicacoes = []Rota{
 		RequerAutenticacao: true,
 	},
 	{
-		URI: "/usuarios/{usuarioId}/publicacoes",
-		Metodo: http.MethodGet,
-		Funcao: controllers.BuscarPublicacoesPorUsuario,
+		URI:                "/usuarios/{usuarioId}/publicacoes",
+		Metodo:             http.MethodGet,
+		Funcao:             controllers.BuscarPublicacoesPorUsuario,
 		RequerAutenticacao: true,
 	},
 	{
 
-		URI: "/publicacoes/{publicacaoId}/curtir",
+		URI:                "/publicacoes/{publicacaoId}/curtir",
+		Metodo:             http.MethodPost,
+		Funcao:             controllers.CurtirPublicacao,
+		RequerAutenticacao: true,
+	},
+	{
+		URI: "/publicacoes/{publicacaoId}/descurtir",
 		Metodo: http.MethodPost,
-
+		Funcao: ,
 	}
 }

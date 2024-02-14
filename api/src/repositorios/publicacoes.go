@@ -185,3 +185,23 @@ func (p publicacoes) CurtirPublicacao(publicacaoId uint64) error {
 
 	return nil
 }
+
+func (p publicacoes) DescurtirPublicacao(publicacaoId uint64) error {
+	statement, erro := p.db.Prepare(`
+	update publicacoes set curtidas =
+	CASE
+		WHEN curtidas > 0 THEN curtidas - 1
+		ELSE curtidas
+	END
+	where id = ?
+	`)
+	if erro != nil {
+		return erro
+	}
+
+	if _, erro = statement.Exec(publicacaoID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
