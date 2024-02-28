@@ -17,7 +17,7 @@ function criarUsuario() {
         method: "POST",
         data: {
             nome: $('#nome').val(),
-            senha: $('#senha').val(),
+            email: $('#email').val(),
             nick: $('#nick').val(),
             senha: $('#senha').val(),
         }

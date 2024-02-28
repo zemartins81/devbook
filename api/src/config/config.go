@@ -28,11 +28,12 @@ func Carregar() {
 		Porta = 9000
 	}
 
-	StringConexaoBanco = fmt.Sprintf("%s:%s@/%s",
+	StringConexaoBanco = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",
 		os.Getenv("MYSQL_USER"),
 		os.Getenv("MYSQL_PASSWORD"),
 		os.Getenv("MYSQL_DATABASE"),
 	)
+	fmt.Println(StringConexaoBanco)
 
 	if SecretKey, erro = secret.GeraSecret(); erro != nil {
 		log.Fatal(erro)

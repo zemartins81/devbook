@@ -141,7 +141,7 @@ func (p publicacoes) BuscarPublicacoesPorUsuario(usuarioId uint64) ([]modelos.Pu
 	select p.*, u.nick from publicacoes p
 	join usuarios u on u.id = p.autor_id
 	where p.autor_id = ?`,
-		usuarioId
+		usuarioId,
 	)
 	if erro != nil {
 		return nil, erro
@@ -179,7 +179,7 @@ func (p publicacoes) CurtirPublicacao(publicacaoId uint64) error {
 	}
 	defer statement.Close()
 
-	if _, erro = statement.Exec(publicacaoID); erro != nil {
+	if _, erro = statement.Exec(publicacaoId); erro != nil {
 		return erro
 	}
 
@@ -199,7 +199,7 @@ func (p publicacoes) DescurtirPublicacao(publicacaoId uint64) error {
 		return erro
 	}
 
-	if _, erro = statement.Exec(publicacaoID); erro != nil {
+	if _, erro = statement.Exec(publicacaoId); erro != nil {
 		return erro
 	}
 
