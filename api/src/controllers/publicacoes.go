@@ -48,11 +48,13 @@ func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repositorio := repositorios.NovoRepositorioDePublicacoes(db)
-	publicacao.ID, erro := repositorio.Criar(publicacao)
+	publicacaoID, erro := repositorio.Criar(publicacao)
 	if erro != nil {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}
+
+	publicacao.ID = publicacaoID
 
 	respostas.JSON(w, http.StatusCreated, publicacao)
 
@@ -153,7 +155,7 @@ func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if erro = publicacao.Preparar(); erro != nil {
-		respostas.Erro(w, h.StatusBadRequest, erro)
+		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
 	}
 
@@ -210,7 +212,7 @@ func DeletarPublicacao(w http.ResponseWriter, r *http.Request) {
 
 func BuscarPublicacoesPorUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
-	usuarioID, error := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
 	if erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return

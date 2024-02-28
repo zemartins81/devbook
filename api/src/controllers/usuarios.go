@@ -32,6 +32,10 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
 	}
+	fmt.Println("Nome: ", usuario.Nome)
+	fmt.Println("Nick: ", usuario.Nick)
+	fmt.Println("Email: ", usuario.Email)
+	fmt.Println("Senha: ", usuario.Senha)
 
 	if erro = usuario.Preparar("cadastro"); erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
@@ -300,8 +304,8 @@ func BuscarSeguindo(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	repositorios.NovoRepositorioDeUsuarios(db)
-	usuarios, erro := repositorios.BuscarSeguindo(usuarioID)
+	repositorio := repositorios.NovoRepositorioDeUsuarios(db)
+	usuarios, erro := repositorio.BuscarSeguindo(usuarioID)
 	if erro != nil {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
