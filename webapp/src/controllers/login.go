@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
-	"github.com/zemartins81/devbookWebApp/src/utils"
+	"github.com/zemartins81/devbookWebApp/src/respostas"
 )
 
 // FazerLogin faz a autenticacao do usuario
 func FazerLogin(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	usuario, err := json.Marshal(map[string]string){
+	usuario, err := json.Marshal(map[string]string{
 		"email": r.FormValue("email"),
 		"senha": r.FormValue("senha"),
 	})
@@ -32,5 +33,6 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(response.StatusCode, response.Body)
+	token, _ := io.ReadAll(response.Body)
+	fmt.Println(response.StatusCode, string(token))
 }
