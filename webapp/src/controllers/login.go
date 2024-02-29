@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
+	"github.com/zemartins81/devbookWebApp/src/config"
+	"github.com/zemartins81/devbookWebApp/src/cookies"
+	"github.com/zemartins81/devbookWebApp/src/modelos"
 	"github.com/zemartins81/devbookWebApp/src/respostas"
 )
 
@@ -23,16 +25,32 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := http.Post(
-		"http://localhost:5000/login",
-		"application/json",
-		bytes.NewBuffer(usuario),
-	)
+	fmt.Println(usuario)
+
+	url := fmt.Sprintf("%s/login", config.ApiUrl)
+	response, err := http.Post(url, "application/json", bytes.NewBuffer(usuario))
 	if err != nil {
 		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}
+	defer response.Body.Close()
 
-	token, _ := io.ReadAll(response.Body)
-	fmt.Println(response.StatusCode, string(token))
+	if response.StatusCode >= 401 {
+		respostas.TratarStatusCodeDeErro(w, response)
+		return
+	}
+
+	var dadosAutenticacao modelos.DadosAutenticacao
+	if err = json.NewDecoder(response.Body).Decode(&dadosAutenticacao); err != nil {
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: err.Error()})
+		return
+	}
+
+	if err = cookies.Salvar(w, dadosAutenticacao.ID, dadosAutenticacao.Token); err != nil {
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: err.Error()})
+		return
+
+	}
+
+	respostas.JSON(w, response.StatusCode, nil)
 }
