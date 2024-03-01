@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
+	"github.com/zemartins81/devbookWebApp/src/secret"
 )
 
 var (
@@ -32,7 +33,7 @@ func Carregar() {
 	}
 
 	ApiUrl = os.Getenv("API_URL")
-	HashKey = []byte(os.Getenv("HASH_KEY"))
-	BlockKey = []byte(os.Getenv("BLOCK_KEY"))
+	HashKey = secret.GerarSecretKey()
+	BlockKey = secret.GerarSecretKey()
 
 }
