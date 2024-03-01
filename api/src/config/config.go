@@ -35,8 +35,9 @@ func Carregar() {
 	)
 	fmt.Println(StringConexaoBanco)
 
-	if SecretKey, erro = secret.GeraSecret(); erro != nil {
+	var secretKeyString string
+	if secretKeyString, erro = secret.GeraSecret(); erro != nil {
 		log.Fatal(erro)
 	}
-
+	SecretKey = []byte(secretKeyString)
 }

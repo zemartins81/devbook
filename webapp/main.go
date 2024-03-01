@@ -11,6 +11,9 @@ import (
 	"github.com/zemartins81/devbookWebApp/src/utils"
 )
 
+//	func init() {
+//		config.HashKey
+//	}
 func main() {
 
 	config.Carregar()

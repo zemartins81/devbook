@@ -20,12 +20,11 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 		"email": r.FormValue("email"),
 		"senha": r.FormValue("senha"),
 	})
+
 	if err != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}
-
-	fmt.Println(usuario)
 
 	url := fmt.Sprintf("%s/login", config.ApiUrl)
 	response, err := http.Post(url, "application/json", bytes.NewBuffer(usuario))
