@@ -17,7 +17,7 @@ function fazerLogin() {
         }
 
     }).done(function() {
-        window.location.href = "/home"
+        window.location = "/home";
     }).fail(function(erro){
         alert(erro.responseText)
     })

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/assets/css/home.css">
+        <title>Devbook - Home</title>
+    </head>
+    <Body>
+        <h2>HomePage</h2>
+
+        {{range .}}
+            <h3>Título: {{.Titulo}}</h4>
+            <span>Conteúdo: {{.Conteudo}}</span>
+        {{end}}
+    </Body>
+</html>

@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	"github.com/zemartins81/devbookWebApp/src/middlewares"
 )
 
 type Rota struct {
@@ -16,9 +18,20 @@ type Rota struct {
 func Configurar(router *mux.Router) *mux.Router {
 	rotas := rotasLogin
 	rotas = append(rotas, rotasUsuarios...)
+	rotas = append(rotas, rotaHome)
 
 	for _, rota := range rotas {
-		router.HandleFunc(rota.URI, rota.Funcao).Methods(rota.Metodo)
+		if rota.RequerAutenticacao {
+			router.HandleFunc(
+				rota.URI,
+				middlewares.Logger(middlewares.Autenticar(rota.Funcao)),
+			).Methods(rota.Metodo)
+		} else {
+			router.HandleFunc(
+				rota.URI,
+				middlewares.Logger(rota.Funcao),
+			).Methods(rota.Metodo)
+		}
 	}
 
 	fileServer := http.FileServer(http.Dir("./assets/"))
