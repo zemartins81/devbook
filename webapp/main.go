@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/zemartins81/devbookWebApp/src/config"
-	"github.com/zemartins81/devbookWebApp/src/cookies"
-	"github.com/zemartins81/devbookWebApp/src/router"
-	"github.com/zemartins81/devbookWebApp/src/utils"
+	"github.com/zemartins81/devbook/devbookWebApp/src/config"
+	"github.com/zemartins81/devbook/devbookWebApp/src/cookies"
+	"github.com/zemartins81/devbook/devbookWebApp/src/router"
+	"github.com/zemartins81/devbook/devbookWebApp/src/utils"
 )
 
 //	func init() {

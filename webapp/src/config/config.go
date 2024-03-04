@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
-	"github.com/zemartins81/devbookWebApp/src/secret"
+	"github.com/zemartins81/devbook/devbookWebApp/src/secret"
 )
 
 var (

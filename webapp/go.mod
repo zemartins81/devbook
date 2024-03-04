@@ -1,4 +1,4 @@
-module github.com/zemartins81/devbookWebApp
+module github.com/zemartins81/devbook/devbookWebApp
 
 go 1.22.0
 
