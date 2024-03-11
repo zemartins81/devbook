@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/zemartins81/devbook/devbookWebApp/src/config"
-	"github.com/zemartins81/devbook/devbookWebApp/src/cookies"
-	"github.com/zemartins81/devbook/devbookWebApp/src/modelos"
-	"github.com/zemartins81/devbook/devbookWebApp/src/respostas"
+	"webapp/src/config"
+	"webapp/src/cookies"
+	"webapp/src/modelos"
+	"webapp/src/respostas"
 )
 
 // FazerLogin faz a autenticacao do usuario

@@ -3,7 +3,7 @@ package rotas
 import (
 	"net/http"
 
-	"github.com/zemartins81/devbookWebApp/src/controllers"
+	"webapp/src/controllers"
 )
 
 var rotasUsuarios = []Rota{

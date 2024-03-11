@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/securecookie"
-	"github.com/zemartins81/devbookWebApp/src/config"
+	"webapp/src/config"
 )
 
 var s *securecookie.SecureCookie

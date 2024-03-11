@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
-	"github.com/zemartins81/devbookWebApp/src/config"
-	"github.com/zemartins81/devbookWebApp/src/modelos"
-	"github.com/zemartins81/devbookWebApp/src/requisicoes"
-	"github.com/zemartins81/devbookWebApp/src/respostas"
-	"github.com/zemartins81/devbookWebApp/src/utils"
+	"webapp/src/config"
+	"webapp/src/cookies"
+	"webapp/src/modelos"
+	"webapp/src/requisicoes"
+	"webapp/src/respostas"
+	"webapp/src/utils"
 )
 
 // CarregarTelaDeLogin Carrega a página de login
@@ -25,9 +27,9 @@ func CarregarPaginaCriarUsuario(w http.ResponseWriter, r *http.Request) {
 // CarregarPaginaPrincipal Carrega a página principal
 func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s/publicacoes", config.ApiUrl)
-	response, err := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
-	if err != nil {
-		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
+	response, erro := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
@@ -38,10 +40,19 @@ func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var publicacoes []modelos.Publicacao
-	if err = json.NewDecoder(response.Body).Decode(&publicacoes); err != nil {
-		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: err.Error()})
+	if erro = json.NewDecoder(response.Body).Decode(&publicacoes); erro != nil {
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
-	utils.ExecutarTemplate(w, "home.html", publicacoes)
+	cookie, _ := cookies.Ler(r)
+	usuarioID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	utils.ExecutarTemplate(w, "home.html", struct {
+		Publicacoes []modelos.Publicacao
+		UsuarioID   uint64
+	}{
+		Publicacoes: publicacoes,
+		UsuarioID:   usuarioID,
+	})
 }

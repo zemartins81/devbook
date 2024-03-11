@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
-	"github.com/zemartins81/devbook/devbookWebApp/src/secret"
 )
 
 var (
@@ -15,9 +14,9 @@ var (
 	// Porta onde a aplicacão web vai rodar
 	Porta = 0
 	// Chave de autenticação do Cookie
-	HashKey = []byte("")
+	HashKey []byte
 	// Chave de segurança do Cookie
-	BlockKey = []byte("")
+	BlockKey []byte
 )
 
 // Carregar inicializa as variáveis de ambiente
@@ -33,7 +32,7 @@ func Carregar() {
 	}
 
 	ApiUrl = os.Getenv("API_URL")
-	HashKey = secret.GerarSecretKey()
-	BlockKey = secret.GerarSecretKey()
+	HashKey = []byte(os.Getenv("HASH_KEY"))
+	BlockKey = []byte(os.Getenv("BLOCK_KEY"))
 
 }

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/zemartins81/devbookWebApp/src/cookies"
+	"webapp/src/cookies"
 )
 
 // Logger escreve informações da requisição no terminal

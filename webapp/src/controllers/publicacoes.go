@@ -5,28 +5,28 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
 	"webapp/src/config"
+	"webapp/src/requisicoes"
 	"webapp/src/respostas"
 )
 
-func CriarUsuario(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
+// CriarPublicacao Chama a api para criar uma publicação
+func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
 
-	usuario, err := json.Marshal(map[string]string{
-		"nome":  r.FormValue("nome"),
-		"email": r.FormValue("email"),
-		"nick":  r.FormValue("nick"),
-		"senha": r.FormValue("senha"),
+	r.ParseForm()
+	publicacao, err := json.Marshal(map[string]string{
+		"titulo":   r.FormValue("titulo"),
+		"conteudo": r.FormValue("conteudo"),
 	})
 	if err != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}
 
-	url := fmt.Sprintf("%s/usuarios", config.ApiUrl)
-	response, err := http.Post(url, "application/json", bytes.NewBuffer(usuario))
+	url := fmt.Sprintf("%s/publicacoes", config.ApiUrl)
+	response, err := requisicoes.RequisicoesComAutenticacao(r, http.MethodPost, url, bytes.NewBuffer(publicacao))
 	if err != nil {
+
 		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}
@@ -38,5 +38,4 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respostas.JSON(w, response.StatusCode, nil)
-
 }

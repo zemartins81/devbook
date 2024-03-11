@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/zemartins81/devbookWebApp/src/cookies"
+	"webapp/src/cookies"
 )
 
 func RequisicoesComAutenticacao(r *http.Request, metodo, url string, dados io.Reader) (*http.Response, error) {

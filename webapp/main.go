@@ -5,15 +5,19 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/zemartins81/devbook/devbookWebApp/src/config"
-	"github.com/zemartins81/devbook/devbookWebApp/src/cookies"
-	"github.com/zemartins81/devbook/devbookWebApp/src/router"
-	"github.com/zemartins81/devbook/devbookWebApp/src/utils"
+	"webapp/src/config"
+	"webapp/src/cookies"
+	"webapp/src/router"
+	"webapp/src/utils"
+
 )
 
-//	func init() {
-//		config.HashKey
-//	}
+// func init() {
+// 	HashKey := hex.EncodeToString(securecookie.GenerateRandomKey(16))
+// 	BlockKey := hex.EncodeToString(securecookie.GenerateRandomKey(16))
+// 	fmt.Println(HashKey, BlockKey)
+// }
+
 func main() {
 
 	config.Carregar()
