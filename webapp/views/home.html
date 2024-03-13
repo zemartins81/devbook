@@ -45,14 +45,13 @@
           </fieldset>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-7 col-xl-7">
-          {{ range .Publicacoes }}
-          <div class="container-fluid py-5">
-            <h3 class="display-4">{{ .Titulo }}</h3>
-            <p class="col-md-8">{{ .Conteudo }}</p>
-            <a href="#"> {{ .AutorNick }} - {{ .CriadaEm }}</a>
-            <hr class="my-4" />
-          </div>
-          {{ end }}
+            {{ range .Publicacoes }}
+                {{ if (eq .AutorID $.UsuarioID) }}
+                    {{ template "publicacao-com-permissao" . }}
+                {{ else }}
+                  {{ template "publicacao-sem-permissao" . }}
+                {{ end }}
+            {{ end }}
         </div>
       </div>
     </div>

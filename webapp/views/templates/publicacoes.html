@@ -1,0 +1,38 @@
+{{ define "curtidas"}}
+    <span> {{ .Curtidas }} curtidas</span>
+{{ end }}
+
+
+{{define "editor" }}
+    <a href="/editar">Editar Publicação</a>
+    <a href="/deletar">Deletar Publicação</a>
+{{ end }}
+
+
+{{ define "cabecalho-publicacao" }}
+  <h3 class="display-4">{{ .Titulo }}</h3>
+  <p class="col-md-8">{{ .Conteudo }}</p>
+  <a href="#"> {{ .AutorNick }} - {{ .CriadaEm }}</a>
+  <hr class="my-4" />
+{{ end }}
+
+
+{{ define "publicacao-com-permissao" }}
+  <div class="container-fluid py-5" data-publicacao-id="{{ .ID }}">
+    {{ template "cabecalho-publicacao" . }}
+    <p>
+        {{ template "curtidas" .}}
+        {{ template "editor"}}
+    </p>
+  </div>
+{{ end }}
+
+
+{{ define "publicacao-sem-permissao" }}
+  <div class="container-fluid py-5" data-publicacao-id="{{ .ID }}">
+    {{ template "cabecalho-publicacao" . }}
+    <p>
+        {{ template "curtidas" .}}
+    </p>
+  </div>
+ {{ end }}
