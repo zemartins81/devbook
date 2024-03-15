@@ -11,7 +11,10 @@ import (
 )
 
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
+	if err := r.ParseForm(); err != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
+		return
+	}
 
 	usuario, err := json.Marshal(map[string]string{
 		"nome":  r.FormValue("nome"),

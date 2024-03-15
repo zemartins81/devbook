@@ -7,13 +7,17 @@ import (
 	"net/http"
 	"webapp/src/config"
 	"webapp/src/requisicoes"
-  "webapp/src/respostas"
+	"webapp/src/respostas"
 )
 
 // CriarPublicacao Chama a api para criar uma publicação
 func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
 
-	r.ParseForm()
+	if err := r.ParseForm(); err != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
+		return
+	}
+
 	publicacao, err := json.Marshal(map[string]string{
 		"titulo":   r.FormValue("titulo"),
 		"conteudo": r.FormValue("conteudo"),
@@ -24,7 +28,12 @@ func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
 	}
 
 	url := fmt.Sprintf("%s/publicacoes", config.ApiUrl)
-	response, err := requisicoes.RequisicoesComAutenticacao(r, http.MethodPost, url, bytes.NewBuffer(publicacao))
+	response, err := requisicoes.RequisicoesComAutenticacao(
+		r,
+		http.MethodPost,
+		url,
+		bytes.NewBuffer(publicacao),
+	)
 	if err != nil {
 
 		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
