@@ -32,10 +32,6 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
 	}
-	fmt.Println("Nome: ", usuario.Nome)
-	fmt.Println("Nick: ", usuario.Nick)
-	fmt.Println("Email: ", usuario.Email)
-	fmt.Println("Senha: ", usuario.Senha)
 
 	if erro = usuario.Preparar("cadastro"); erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
