@@ -1,25 +1,19 @@
-$(document).ready(function () {
+$('#login').on('submit', fazerLogin);
 
-    $('#login').submit(function (event) {
-        event.preventDefault()
-        fazerLogin()
-    })
-})
-
-function fazerLogin() {
+function fazerLogin(evento) {
+    evento.preventDefault();
 
     $.ajax({
         url: "/login",
         method: "POST",
         data: {
-          email: $('input[type=email]').val(),
-          senha: $('#senha').val(),
+            email: $('#email').val(),
+            senha: $('#senha').val(),
         }
-
     }).done(function() {
         window.location = "/home";
-    }).fail(function(erro){
-        alert(erro.responseText)
-    })
+    }).fail(function() {
+        Swal.fire("Ops...", "Usuário ou senha incorretos!", "error");
+    });
 }
 

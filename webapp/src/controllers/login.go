@@ -42,16 +42,17 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+
+
 	var dadosAutenticacao modelos.DadosAutenticacao
 	if err = json.NewDecoder(response.Body).Decode(&dadosAutenticacao); err != nil {
 		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: err.Error()})
 		return
-	}
-
+	} 
+    
 	if err = cookies.Salvar(w, dadosAutenticacao.ID, dadosAutenticacao.Token); err != nil {
 		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: err.Error()})
 		return
-
 	}
 
 	respostas.JSON(w, response.StatusCode, nil)
