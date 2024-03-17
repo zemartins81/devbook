@@ -1,39 +1,41 @@
-{{ define "curtidas"}}
-    <i class="fa-solid fa-heart curtir-publicacao text-danger"></i>
-    <span> {{ .Curtidas }} </span>
+{{ define "curtidas" }}
+<i class="fas fa-heart curtir-publicacao" style="cursor: pointer;"></i>
+<span> {{ .Curtidas }} </span>
 {{ end }}
 
-
-{{define "editor" }}
-    <a href="/editar" style="text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i></a>
-    <a href="/deletar" style="text-decoration: none;"><i class="fa-regular fa-trash-can"></i></a>
+{{ define "editar" }}
+<a href="/publicacoes/{{ .ID }}/atualizar" style="text-decoration: none;">
+    <i class="fas fa-edit"></i>
+</a>
 {{ end }}
 
+{{ define "deletar" }}
+    <i class="fas fa-trash text-danger deletar-publicacao" style="cursor: pointer;"></i>
+{{ end }}
 
 {{ define "cabecalho-publicacao" }}
-    <h3 class="display-4">{{ .Titulo }}</h3>
-    <p class="col-md-8">{{ .Conteudo }}</p>
-    <a href="#"> {{ .AutorNick }}</a> - Criado em: {{ .CriadaEm.Format "02/01/2006" }}
-    <hr class="my-4" />
+    <h1 class="display-4"> {{ .Titulo }} </h1>
+    <p class="lead">{{ .Conteudo }}</p>
+    <a href="/usuarios/{{ .AutorID }}"> {{ .AutorNick }} - {{ .CriadaEm.Format "02/01/2006" }} </a>
+    <hr class="my-4">
 {{ end }}
 
-
 {{ define "publicacao-com-permissao" }}
-    <div class="container-fluid py-5" data-publicacao-id="{{ .ID }}">
+    <div class="jumbotron" data-publicacao-id="{{ .ID }}">
         {{ template "cabecalho-publicacao" . }}
         <p>
             {{ template "curtidas" . }}
-            {{ template "editor" . }}
+            {{ template "editar" . }}
+            {{ template "deletar" . }}
         </p>
     </div>
 {{ end }}
 
-
 {{ define "publicacao-sem-permissao" }}
-<div class="container-fluid py-5" data-publicacao-id="{{ .ID }}">
-    {{ template "cabecalho-publicacao" . }}
-    <p>
-        {{ template "curtidas" . }}
-    </p>
-</div>
+    <div class="jumbotron" data-publicacao-id="{{ .ID }}">
+        {{ template "cabecalho-publicacao" . }}
+        <p>
+            {{ template "curtidas" . }}
+        </p>
+    </div>
 {{ end }}

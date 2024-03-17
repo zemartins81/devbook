@@ -7,6 +7,7 @@ import (
 	"api/src/repositorios"
 	"api/src/respostas"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -116,7 +117,8 @@ func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
 	}
 
 	parametros := mux.Vars(r)
-	publicacaoID, erro := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
+
+	publicacaoID, erro := strconv.ParseUint(parametros["publicacaoID"], 10, 64)
 	if erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
 		return
@@ -132,7 +134,6 @@ func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
 	repositorio := repositorios.NovoRepositorioDePublicacoes(db)
 	publicacaoSalvaNoBanco, erro := repositorio.BuscarPorID(publicacaoID)
 	if erro != nil {
-
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}

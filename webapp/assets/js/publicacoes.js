@@ -1,6 +1,10 @@
-$('#nova-publicacao').onSubmit(criarPublicacao);
+$('#nova-publicacao').on('submit', criarPublicacao);
 
 $(document).on('click', '.curtir-publicacao', curtirPublicacao);
+$(document).on('click', '.descurtir-publicacao', descurtirPublicacao);
+
+$('#atualizar-publicacao').on('submit', atualizarPublicacao);
+// $('.deletar-publicacao').on('click', deletarPublicacao);
 
 function criarPublicacao(event) {
     event.preventDefault();
@@ -30,9 +34,8 @@ function criarPublicacao(event) {
         }
     }).done(function() {
         window.location = "/home";
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.error('Erro ao criar publicação:', textStatus, errorThrown);
-        alert("Erro ao criar publicação", "error");
+    }).fail(function() {
+        alert("Erro ao criar publicação!");
     });
 }
 
@@ -42,15 +45,75 @@ function curtirPublicacao(event) {
     const elementoClicado = $(event.target);
     const publicacaoId = elementoClicado.closest('div').data('publicacao-id');
 
+    elementoClicado.prop('disabled', true);
+
     $.ajax({
         url: `/publicacoes/${publicacaoId}/curtir`,
         method: "POST"
     }).done(function() {
         const contadorDeCurtidas = elementoClicado.next('span');
-            const quantidadeDeCurtidas = parseInt(contadorDeCurtidas.text());
+        const quantidadeDeCurtidas = parseInt(contadorDeCurtidas.text());
+        contadorDeCurtidas.text(quantidadeDeCurtidas + 1);
 
-            contadorDeCurtidas.text(quantidadeDeCurtidas + 1);
+        elementoClicado.addClass('descurtir-publicacao');
+        elementoClicado.addClass('text-danger');
+        elementoClicado.removeClass('curtir-publicacao');
     }).fail(function() {
         alert("Erro ao curtir a publicação");
-    })
+    }).always(function() {
+        elementoClicado.prop('disabled', false);
+    });
+}
+
+function descurtirPublicacao(event) {
+    event.preventDefault();
+
+    const elementoClicado = $(event.target);
+    const publicacaoId = elementoClicado.closest('div').data('publicacao-id');
+
+    elementoClicado.prop('disabled', true);
+
+    $.ajax({
+        url: `/publicacoes/${publicacaoId}/descurtir`,
+        method: "POST"
+    }).done(function() {
+        const contadorDeCurtidas = elementoClicado.next('span');
+        const quantidadeDeCurtidas = parseInt(contadorDeCurtidas.text());
+        contadorDeCurtidas.text(quantidadeDeCurtidas - 1);
+
+        elementoClicado.removeClass('descurtir-publicacao');
+        elementoClicado.removeClass('text-danger');
+        elementoClicado.addClass('curtir-publicacao');
+
+    }).fail(function() {
+        alert("Erro ao descurtir a publicação");
+    }).always(function() {
+        elementoClicado.prop('disabled', false);
+    });
+}
+
+function atualizarPublicacao(event) {
+    event.preventDefault();
+
+    const elementoClicado = $(event.target);
+    elementoClicado.prop('disabled', true);
+
+    const publicacaoId = elementoClicado.closest('div').data('publicacao-id');
+    const publicacaoTitulo = $('#titulo').val();
+    const publicacaoConteudo = $('#conteudo').val();
+
+    $.ajax({
+        url: `/publicacoes/${publicacaoId}`,
+        method: "PUT",
+        data: {
+            titulo: publicacaoTitulo,
+            conteudo: publicacaoConteudo
+        }
+    }).done(function() {
+        window.location = "/home";
+    }).fail(function() {
+        alert("Erro ao atualizar publicação");
+    }).always(function() {
+        elementoClicado.prop('disabled', false);
+    });
 }
