@@ -1,7 +1,6 @@
 package config
 
 import (
-	"api/src/secret"
 	"fmt"
 	"log"
 	"os"
@@ -35,9 +34,5 @@ func Carregar() {
 	)
 	fmt.Println(StringConexaoBanco)
 
-	var secretKeyString string
-	if secretKeyString, erro = secret.GeraSecret(); erro != nil {
-		log.Fatal(erro)
-	}
-	SecretKey = []byte(secretKeyString)
+    SecretKey = []byte(os.Getenv("SECRET_KEY"))
 }

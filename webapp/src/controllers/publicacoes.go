@@ -56,7 +56,7 @@ func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
 func CurtirPublicacao(w http.ResponseWriter, r *http.Request) {
 
 	parametros := mux.Vars(r)
-	publicacaoID, err := strconv.ParseUint(parametros["publicacaoID"], 10, 64)
+	publicacaoID, err := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if err != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
 		return
@@ -65,7 +65,7 @@ func CurtirPublicacao(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s/publicacoes/%d/curtir", config.ApiUrl, publicacaoID)
 
 	response, err := requisicoes.RequisicoesComAutenticacao(r, http.MethodPost, url, nil)
-	 if err != nil {
+	if err != nil {
 		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}

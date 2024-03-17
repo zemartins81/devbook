@@ -16,7 +16,7 @@ var rotasPublicacoes = []Rota{
 	},
 {
         URI:                "/publicacoes/{publicacaoId}/curtir",
-        Metodo:             http.MethodGet,
+        Metodo:             http.MethodPost,
         Funcao:             controllers.CurtirPublicacao,
         RequerAutenticacao: true,
     },

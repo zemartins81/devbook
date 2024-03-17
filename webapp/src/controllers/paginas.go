@@ -48,6 +48,8 @@ func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Ler(r)
 	usuarioID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
+    fmt.Println(publicacoes)
+
 	utils.ExecutarTemplate(w, "home.html", struct {
 		Publicacoes []modelos.Publicacao
 		UsuarioID   uint64

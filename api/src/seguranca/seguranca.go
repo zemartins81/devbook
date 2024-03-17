@@ -6,7 +6,7 @@ import "golang.org/x/crypto/bcrypt"
 // Retorna o hash como um slice de bytes.
 func Hash(senha string) ([]byte, error) {
 	// Gera o hash da senha utilizando o custo padrão.
-	hash, err := bcrypt.GenerateFromPassword([]byte(senha), bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword([]byte(senha), 15)
 	if err != nil {
 		return nil, err
 	}

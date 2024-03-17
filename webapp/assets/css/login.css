@@ -72,7 +72,7 @@ input::placeholder {
     margin-bottom: 16px;
 }
 
-.btn-login {
+.btn-devbook {
     font-size: 16px;
     color: #fff;
     line-height: 1.2;
@@ -84,6 +84,6 @@ input::placeholder {
     border: none;
 }
 
-.btn-login:hover {
+.btn-devbook:hover {
     cursor: pointer;
 }
