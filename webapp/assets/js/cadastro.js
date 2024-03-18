@@ -1,6 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
-    $('#cadastro').submit(function (event) {
+    $('#cadastro').submit(function(event) {
         event.preventDefault()
         criarUsuario()
     })
@@ -8,7 +8,12 @@ $(document).ready(function () {
 
 function criarUsuario() {
     if ($('#senha').val() != $('#confirma-senha').val()) {
-        alert('As senhas não conferem')
+        Swal.fire({
+            'title': 'Erro!',
+            'text': 'As senhas não conferem!',
+            'icon': 'error',
+            'timer': 2000,
+        })
         return
     }
 
@@ -21,10 +26,23 @@ function criarUsuario() {
             nick: $('#nick').val(),
             senha: $('#senha').val(),
         }
-    }).done(function(){
-        alert("Usuario cadastrado com sucesso!");
-    }).fail(function(erro){
-        console.log(erro)
-        alert("Erro ao cadastrar o usuário!")
+    }).done(function() {
+        Swal.fire({
+            'title': 'Sucesso!',
+            'text': 'Usuario criado com sucesso!',
+            'icon': 'success',
+            'timer': 2000,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location = "/login";
+            }
+        })
+    }).fail(function(erro) {
+        Swal.fire({
+            'title': 'Erro!',
+            'text': 'Erro ao criar o usuário!',
+            'icon': 'error',
+            'timer': 2000,
+        })
     });
 }

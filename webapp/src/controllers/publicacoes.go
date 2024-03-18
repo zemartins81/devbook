@@ -162,15 +162,12 @@ func DeletarPublicacao(w http.ResponseWriter, r *http.Request) {
 	}
 	defer response.Body.Close()
 
-    fmt.Println(response.StatusCode)
+	fmt.Println(response.StatusCode)
 
-    
 	if response.StatusCode >= 400 {
 		respostas.TratarStatusCodeDeErro(w, response)
 		return
 	}
-
-
 
 	respostas.JSON(w, response.StatusCode, nil)
 
