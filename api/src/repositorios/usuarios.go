@@ -99,20 +99,14 @@ func (u Usuarios) BuscarPorID(ID uint64) (modelos.Usuario, error) {
 	defer linhas.Close()
 
 	var usuario modelos.Usuario
-	var criadoEmBytes []byte
 	if linhas.Next() {
 		if erro = linhas.Scan(
 			&usuario.ID,
 			&usuario.Nome,
 			&usuario.Nick,
 			&usuario.Email,
-			&criadoEmBytes,
+            &usuario.CriadoEm,
 		); erro != nil {
-			return modelos.Usuario{}, erro
-		}
-		criadoEmStr := string(criadoEmBytes)
-		usuario.CriadoEm, erro = time.Parse("2006-01-02 15:04:05", criadoEmStr) // Use o formato correto
-		if erro != nil {
 			return modelos.Usuario{}, erro
 		}
 	}
@@ -223,23 +217,19 @@ func (u Usuarios) BuscarSeguidores(usuarioID uint64) ([]modelos.Usuario, error) 
 
 	for linhas.Next() {
 		var usuario modelos.Usuario
-		var criadoEmBytes []byte
 		if erro = linhas.Scan(
 			&usuario.ID,
 			&usuario.Nome,
 			&usuario.Nick,
 			&usuario.Email,
-			&criadoEmBytes,
+			&usuario.CriadoEm,
 		); erro != nil {
-			return nil, erro
-		}
-		criadoEmStr := string(criadoEmBytes)
-		usuario.CriadoEm, erro = time.Parse("2006-01-02 15:04:05", criadoEmStr) // Use o formato correto
-		if erro != nil {
 			return nil, erro
 		}
 		usuarios = append(usuarios, usuario)
 	}
+
+
 
 	return usuarios, nil
 }
@@ -259,25 +249,21 @@ func (u Usuarios) BuscarSeguindo(usuarioID uint64) ([]modelos.Usuario, error) {
 
 	for linhas.Next() {
 		var usuario modelos.Usuario
-		var criadoEmBytes []byte
 		if erro = linhas.Scan(
 			&usuario.ID,
 			&usuario.Nome,
 			&usuario.Nick,
 			&usuario.Email,
-			&criadoEmBytes,
+			&usuario.CriadoEm,
 		); erro != nil {
 			return nil, erro
 		}
-		criadoEmStr := string(criadoEmBytes)
-		usuario.CriadoEm, erro = time.Parse("2006-01-02 15:04:05", criadoEmStr) // Use o formato correto
-		if erro != nil {
-			return nil, erro
-		}
-
 		usuarios = append(usuarios, usuario)
 	}
-	return usuarios, nil
+
+	
+    fmt.Println(usuarios)
+	return usuarios, nil 
 
 }
 

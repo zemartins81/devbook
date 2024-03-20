@@ -281,7 +281,7 @@ func BuscarSeguidores(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}
-
+ 
 	respostas.JSON(w, http.StatusOK, seguidores)
 }
 

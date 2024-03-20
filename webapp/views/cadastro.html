@@ -10,6 +10,7 @@
     </head>
 
     <body>
+        {{ template "cabecalho" }}
         <div class="container-cadastro">
             <div>
                 <form class="devbook-form" id="cadastro">
@@ -34,7 +35,7 @@
                 </form>
             </div>
         </div>
-        {{ script "scripts" }}
+        {{ template "scripts" }}
         <script src="../assets/js/cadastro.js"></script>
     </body>
 </html>
