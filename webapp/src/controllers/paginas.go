@@ -19,11 +19,11 @@ import (
 
 // CarregarTelaDeLogin Carrega a página de login
 func CarregarTelaDeLogin(w http.ResponseWriter, r *http.Request) {
-	cookie, _ := cookies.Ler(r)
-	if cookie["token"] != "" {
+	if cookies.Validar(r) {
 		http.Redirect(w, r, "/home", 302)
 		return
 	}
+
 	utils.ExecutarTemplate(w, "login.html", nil)
 }
 
@@ -34,6 +34,10 @@ func CarregarPaginaCriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 // CarregarPaginaPrincipal Carrega a página principal
 func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
+	if cookies.Validar(r) {
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
 	url := fmt.Sprintf("%s/publicacoes", config.ApiUrl)
 	response, erro := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
@@ -67,6 +71,10 @@ func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 
 // CarregarPaginaEdicaoPublicacao Carrega a página de edição de publicação
 func CarregarPaginaDeAtualizacaoDePublicacao(w http.ResponseWriter, r *http.Request) {
+	if cookies.Validar(r) {
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
 	parametros := mux.Vars(r)
 	publicacaoID, erro := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if erro != nil {
@@ -99,6 +107,10 @@ func CarregarPaginaDeAtualizacaoDePublicacao(w http.ResponseWriter, r *http.Requ
 
 // CarregarPaginaDeUsuarios carrega a pagina de usuarios que atendem o filtro passado
 func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
+	if cookies.Validar(r) {
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
 
 	nomeOuNick := strings.ToLower(r.URL.Query().Get("usuario"))
 	url := fmt.Sprintf("%s/usuarios?usuario=%s", config.ApiUrl, nomeOuNick)
@@ -127,6 +139,12 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 
 // CarregarPerfilDoUsuario Carrega a página de perfil
 func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
+
+	if cookies.Validar(r) {
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
+
 	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioID"], 10, 64)
 	if erro != nil {
@@ -135,5 +153,20 @@ func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	usuario, erro := modelos.BuscarUsuarioCompleto(usuarioID, r)
-    fmt.Println(usuario, erro)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
+		return
+	}
+
+	cookie, _ := cookies.Ler(r)
+	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	utils.ExecutarTemplate(w, "usuario.html", struct {
+		Usuario         modelos.Usuario
+		UsuarioLogadoID uint64
+	}{
+		Usuario:         usuario,
+		UsuarioLogadoID: usuarioLogadoID,
+	})
+
 }

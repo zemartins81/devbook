@@ -44,7 +44,6 @@ func BuscarUsuarioCompleto(usuarioID uint64, r *http.Request) (Usuario, error) {
 	for i := 0; i < 4; i++ {
 		select {
 		case usuarioCarregado := <-canalUsuario:
-            fmt.Println("usuarioCarregado: ", usuarioCarregado)
 			if usuarioCarregado.ID == 0 {
 				return Usuario{}, errors.New("Usuário não encontrado")
 			}

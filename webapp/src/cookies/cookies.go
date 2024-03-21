@@ -2,10 +2,12 @@ package cookies
 
 import (
 	"net/http"
-  "time"
+	"strconv"
+	"time"
+
+	"webapp/src/config"
 
 	"github.com/gorilla/securecookie"
-	"webapp/src/config"
 )
 
 var s *securecookie.SecureCookie
@@ -52,11 +54,20 @@ func Ler(r *http.Request) (map[string]string, error) {
 
 // Deletar apaga as informações de login
 func Deletar(w http.ResponseWriter) {
-  http.SetCookie(w, &http.Cookie{
-    Name:   "dados",
-    Value:  "",
-    Path:   "/",
-    HttpOnly: true,
-    Expires: time.Unix(0, 0),
-  })
+	http.SetCookie(w, &http.Cookie{
+		Name:     "dados",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		Expires:  time.Unix(0, 0),
+	})
+}
+
+func Validar(r *http.Request) bool {
+	cookie, _ := Ler(r)
+	if cookie["token"] != "" {
+		expires, _ := strconv.ParseInt(cookie["Expires"], 10, 64)
+		return expires >= time.Now().Unix()
+	}
+	return false
 }
