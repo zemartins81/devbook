@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,9 @@
 
     {{ $SeguidoPeloUsuarioLogado := false }}
     {{ range .Usuario.Seguidores }}
-        {{ if (eq .ID $.UsuarioLogadoID )}}
-            {{ $SeguidoPeloUsuarioLogado = true }}
-        {{ end }}
+    {{ if (eq .ID $.UsuarioLogadoID )}}
+    {{ $SeguidoPeloUsuarioLogado = true }}
+    {{ end }}
     {{ end }}
 
     <div class="container-fluid">
@@ -38,9 +39,9 @@
                         </p>
                         <a href="#" class="card-link">
                             {{ if $SeguidoPeloUsuarioLogado }}
-                                <button id="parar-de-seguir" class="btn btn-info" data-usuario-id="{{ .Usuario.ID }}">Parar de Seguir</button>
+                            <button id="parar-de-seguir" class="btn btn-info" data-usuario-id="{{ .Usuario.ID }}">Parar de Seguir</button>
                             {{ else }}
-                                <button id="seguir" class="btn btn-info" data-usuario-id="{{ .Usuario.ID }}">Seguir</button>
+                            <button id="seguir" class="btn btn-info" data-usuario-id="{{ .Usuario.ID }}">Seguir</button>
                             {{ end }}
                         </a>
                     </div>
@@ -54,12 +55,12 @@
                         <h5 class="card-title"> Publicações do Usuário {{ .Usuario.Nick }}</h5>
                         <p class="card-text">
                             {{ range .Usuario.Publicacoes }}
-                                {{ template "publicacao-sem-permissao" . }}
+                            {{ template "publicacao-sem-permissao" . }}
                             {{ else }}
-                            <p class="card-text">
-                                Nenhuma publicação encontrada!
-                            </p>
-                            {{ end }}
+                        <p class="card-text">
+                            Nenhuma publicação encontrada!
+                        </p>
+                        {{ end }}
                         </p>
                     </div>
                 </div>
@@ -69,5 +70,7 @@
     {{ template "rodape" }}
     {{ template "scripts" }}
     <script src="/assets/js/publicacoes.js"></script>
+    <script src="/assets/js/usuario.js"></script>
 </body>
+
 </html>

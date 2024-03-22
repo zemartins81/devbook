@@ -113,14 +113,17 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 	}
 
 	nomeOuNick := strings.ToLower(r.URL.Query().Get("usuario"))
-	url := fmt.Sprintf("%s/usuarios?usuario=%s", config.ApiUrl, nomeOuNick)
 
-	response, erro := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
+	url := fmt.Sprintf("%s/usuarios?usuario=%s", config.ApiUrl, nomeOuNick)
+	
+    response, erro := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
 		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
+
+    fmt.Println(response.StatusCode)
 
 	if response.StatusCode >= 400 {
 		respostas.TratarStatusCodeDeErro(w, response)
@@ -128,6 +131,8 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var usuarios []modelos.Usuario
+
+    fmt.Println(json.NewDecoder(response.Body).Buffered())
 
 	if erro = json.NewDecoder(response.Body).Decode(&usuarios); erro != nil {
 		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: erro.Error()})

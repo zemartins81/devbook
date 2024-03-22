@@ -20,7 +20,6 @@ import (
 
 // CriarUsuario cria um novo usuário no sistema.
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
-
 	corpoRequest, erro := io.ReadAll(r.Body)
 	if erro != nil {
 		respostas.Erro(w, http.StatusUnprocessableEntity, erro)
@@ -72,7 +71,6 @@ func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}
-
 	respostas.JSON(w, http.StatusOK, usuarios)
 }
 
@@ -227,12 +225,14 @@ func SeguirUsuario(w http.ResponseWriter, r *http.Request) {
 
 func PararDeSeguirUsuario(w http.ResponseWriter, r *http.Request) {
 	seguidorID, erro := autenticacao.ExtrairUsuarioID(r)
+	fmt.Println("seguidorID: ", seguidorID)
 	if erro != nil {
 		respostas.Erro(w, http.StatusUnauthorized, erro)
 		return
 	}
 
 	parametros := mux.Vars(r)
+	fmt.Println(parametros)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioID"], 10, 64)
 	if erro != nil {
 		respostas.Erro(w, http.StatusBadRequest, erro)
@@ -281,7 +281,7 @@ func BuscarSeguidores(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}
- 
+
 	respostas.JSON(w, http.StatusOK, seguidores)
 }
 
@@ -356,7 +356,7 @@ func AtualizarSenha(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if erro = seguranca.VerificarSenha(senhaSalvaNoBanco, senha.Atual); erro != nil {
-		respostas.Erro(w, http.StatusUnauthorized, errors.New("Senha inválida"))
+		respostas.Erro(w, http.StatusUnauthorized, errors.New("senha inválida"))
 		return
 	}
 

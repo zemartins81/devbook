@@ -64,14 +64,13 @@ func BuscarUsuarioCompleto(usuarioID uint64, r *http.Request) (Usuario, error) {
 
 			seguindo = seguindoCarregados
 
-        case publicacoesCarregadas := <-canalPublicacoes:
+		case publicacoesCarregadas := <-canalPublicacoes:
 			if publicacoesCarregadas == nil {
 				return Usuario{}, errors.New("erro ao carregar publicacoes")
 			}
 
 			publicacoes = publicacoesCarregadas
 		}
-
 	}
 
 	usuario.Seguidores = seguidores
@@ -84,13 +83,14 @@ func BuscarUsuarioCompleto(usuarioID uint64, r *http.Request) (Usuario, error) {
 // BuscarDadosDoUsuario chama a API para buscar os dados do usuario
 func BuscarDadosDoUsuario(canal chan<- Usuario, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d", config.ApiUrl, usuarioID)
-
+fmt.Println(url)
 	response, erro := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
 		canal <- Usuario{}
 		return
 	}
 	defer response.Body.Close()
+
 
 	var usuario Usuario
 	if erro = json.NewDecoder(response.Body).Decode(&usuario); erro != nil {
@@ -104,7 +104,7 @@ func BuscarDadosDoUsuario(canal chan<- Usuario, usuarioID uint64, r *http.Reques
 // BuscarSeguidores chama a API para buscar os seguidores
 func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/seguidores", config.ApiUrl, usuarioID)
-    fmt.Println(url)
+	fmt.Println(url)
 
 	response, erro := requisicoes.RequisicoesComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
@@ -119,6 +119,12 @@ func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request)
 		return
 	}
 
+    fmt.Println("Seguidores: ", seguidores)
+
+	if seguidores == nil {
+		canal <- make([]Usuario, 0)
+		return
+	}
 	canal <- seguidores
 }
 
@@ -157,6 +163,10 @@ func BuscarPublicacoes(canal chan<- []Publicacao, usuarioID uint64, r *http.Requ
 	if erro = json.NewDecoder(response.Body).Decode(&publicacoes); erro != nil {
 		canal <- nil
 		return
+	}
+
+	if publicacoes == nil {
+		canal <- make([]Publicacao, 0)
 	}
 
 	canal <- publicacoes

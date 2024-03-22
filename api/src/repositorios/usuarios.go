@@ -4,7 +4,6 @@ import (
 	"api/src/modelos"
 	"database/sql"
 	"fmt"
-	"time"
 )
 
 type Usuarios struct {
@@ -63,19 +62,13 @@ func (u Usuarios) Buscar(nomeOuNick string) ([]modelos.Usuario, error) {
 
 	for linhas.Next() {
 		var usuario modelos.Usuario
-		var criadoEmBytes []byte
 		if erro = linhas.Scan(
 			&usuario.ID,
 			&usuario.Nome,
 			&usuario.Nick,
 			&usuario.Email,
-			&criadoEmBytes,
+			&usuario.CriadoEm,
 		); erro != nil {
-			return nil, erro
-		}
-		criadoEmStr := string(criadoEmBytes)
-		usuario.CriadoEm, erro = time.Parse("2006-01-02 15:04:05", criadoEmStr) // Use o formato correto
-		if erro != nil {
 			return nil, erro
 		}
 
