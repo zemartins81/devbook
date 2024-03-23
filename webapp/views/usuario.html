@@ -11,9 +11,9 @@
     {{ template "cabecalho" }}
 
     {{ $SeguidoPeloUsuarioLogado := false }}
-    {{ range .Usuario.Seguidores }}
+        {{ range .Usuario.Seguidores }}
     {{ if (eq .ID $.UsuarioLogadoID )}}
-    {{ $SeguidoPeloUsuarioLogado = true }}
+        {{ $SeguidoPeloUsuarioLogado = true }}
     {{ end }}
     {{ end }}
 
@@ -28,12 +28,12 @@
                             {{.Usuario.CriadoEm.Format "02/01/2006" }}"
                         </h6>
                         <p class="card-text">
-                            <a href="#">
+                            <a href="#" data-toggle="modal" data-target="#modal-seguidores">
                                 Seguidores: {{ len .Usuario.Seguidores }}
                             </a>
                         </p>
                         <p class="card-text">
-                            <a href="#">
+                            <a href="#" data-toggle="modal" data-target="#modal-seguindo">
                                 Seguindo: {{ len .Usuario.Seguindo }}
                             </a>
                         </p>
@@ -67,6 +67,7 @@
             </div>
         </div>
     </div>
+    {{ template "modal-seguidores" .Usuario }}
     {{ template "rodape" }}
     {{ template "scripts" }}
     <script src="/assets/js/publicacoes.js"></script>
