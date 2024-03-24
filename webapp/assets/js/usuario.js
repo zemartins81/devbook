@@ -1,6 +1,7 @@
 $('#parar-de-seguir').on('click', pararDeSeguir)
 $('#seguir').on('click', seguir)
-
+ 
+ 
 function pararDeSeguir(event) {
     event.preventDefault();
     const usuarioId = $(this).data('usuario-id')
@@ -43,3 +44,5 @@ function seguir(event) {
     });
 
 }
+
+

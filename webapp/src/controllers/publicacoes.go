@@ -15,7 +15,6 @@ import (
 
 // CriarPublicacao Chama a api para criar uma publicação
 func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
-
 	if err := r.ParseForm(); err != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
 		return
@@ -54,7 +53,6 @@ func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
 
 // CurtirPublicacao Chama a api para curtir uma publicação
 func CurtirPublicacao(w http.ResponseWriter, r *http.Request) {
-
 	parametros := mux.Vars(r)
 	publicacaoID, err := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if err != nil {
@@ -80,7 +78,6 @@ func CurtirPublicacao(w http.ResponseWriter, r *http.Request) {
 }
 
 func DescurtirPublicacao(w http.ResponseWriter, r *http.Request) {
-
 	parametros := mux.Vars(r)
 	publicacaoID, err := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if err != nil {
@@ -107,7 +104,6 @@ func DescurtirPublicacao(w http.ResponseWriter, r *http.Request) {
 
 // AtualizarPublicacao Chama a api para atualizar uma publicação
 func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
-
 	parametros := mux.Vars(r)
 	publicacaoId, err := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if err != nil {
@@ -122,7 +118,6 @@ func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
 		"conteudo": r.FormValue("conteudo"),
 	})
 	if err != nil {
-		fmt.Println("aqui 3")
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}
@@ -145,7 +140,6 @@ func AtualizarPublicacao(w http.ResponseWriter, r *http.Request) {
 
 // DeletarPublicacao Chama a api para deletar uma publicação
 func DeletarPublicacao(w http.ResponseWriter, r *http.Request) {
-
 	parametros := mux.Vars(r)
 	publicacaoId, err := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if err != nil {
@@ -162,13 +156,10 @@ func DeletarPublicacao(w http.ResponseWriter, r *http.Request) {
 	}
 	defer response.Body.Close()
 
-	fmt.Println(response.StatusCode)
-
 	if response.StatusCode >= 400 {
 		respostas.TratarStatusCodeDeErro(w, response)
 		return
 	}
 
 	respostas.JSON(w, response.StatusCode, nil)
-
 }
